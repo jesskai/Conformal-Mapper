@@ -1,19 +1,23 @@
-function [t] = conformalMap(line, func, plotfunc)
-%[t] = conformalMap(line,function, plotfunc) graphs line before and after transform by
+function [t] = conformalMap(line, func)
+%[t] = conformalMap(line,function) graphs line before and after transform by
 %function
 %   Pass in line as a NxM matrix of complex numbers, with each column being
 %   a line to plot. Func should be the transform function where w =
-%   func(z). You can use the plotfunc to plot things differently, and it
-%   returns the tiled plot
+%   func(z). 
 arguments
-    line complex
-    func {isa(func, 'function_handle')}
-    plotfunc {isa(plotfunc, 'function_handle')} = @plot;
+    line {iscomplex(line)}
+    func function_handle 
 end
-data = func(line);
 t = tiledlayout(1,2);
 nexttile;
-plotfunc(data);
+plot(line);
 nexttile;
-plotfunc(func(data));
+plot(func(line));
+end
+
+%custom validation function
+function iscomplex(a)
+    if isreal(a)
+        error("line isn't complex!")
+    end
 end
